@@ -1,0 +1,12 @@
+
+void inorder(TreeNode* node, vector<int>& res) {
+    if (!node) return;
+    inorder(node->left, res);   // Left
+    res.push_back(node->val);   // Root
+    inorder(node->right, res);  // Right
+}
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    inorder(root, res);
+    return res;
+}
