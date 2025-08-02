@@ -1,0 +1,60 @@
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> result;
+    TreeNode* curr = root;
+    
+    while(curr != NULL) {
+        if(curr->left == NULL) {
+            // No left child, visit current node
+            result.push_back(curr->val);
+            curr = curr->right;
+        }
+        else {
+            // Find the rightmost node in left subtree
+            TreeNode* leftChild = curr->left;
+            while(leftChild->right != NULL) {
+                leftChild = leftChild->right;
+            }
+            
+            // Make current node the right child of predecessor
+            leftChild->right = curr;
+            
+            // Move to left child and cut the original left link
+            TreeNode* temp = curr;
+            curr = curr->left;
+            temp->left = NULL;
+        }
+    }
+    return result;
+}
+
+
+Morris Inorder Traversal Logic
+Initialization
+
+Start at the root node (curr = root).
+
+Use a result vector to store the traversal order.
+
+While current node exists (while(curr != NULL)):
+
+Case 1: No left child (if(curr->left == NULL))
+
+Visit the current node (result.push_back(curr->val)).
+
+Move to the right child (curr = curr->right).
+
+Case 2: Left child exists (else)
+
+Find the rightmost node in the left subtree (leftChild = curr->left and traverse leftChild->right until NULL).
+
+Link the rightmost node to the current node (leftChild->right = curr).
+
+Move to the left child (curr = curr->left).
+
+Break the original left link (temp->left = NULL) to avoid cycles.
+
+Termination
+
+When curr becomes NULL, traversal is complete.
+
+Return the result vector containing nodes in inorder (left-root-right).
