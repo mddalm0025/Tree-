@@ -1,0 +1,30 @@
+vector<int> preorderTraversal(TreeNode* root) {
+    vector<int> result;
+    TreeNode* curr = root;
+    
+    while (curr != nullptr) {
+        if (curr->left == nullptr) {
+            // Visit current node (root), then move right
+            result.push_back(curr->val);
+            curr = curr->right;
+        } else {
+            // Find the rightmost node in left subtree
+            TreeNode* predecessor = curr->left;
+            while (predecessor->right != nullptr && predecessor->right != curr) {
+                predecessor = predecessor->right;
+            }
+            
+            if (predecessor->right == nullptr) {
+                // First time visiting - make thread and visit current node
+                result.push_back(curr->val);  // Preorder visit
+                predecessor->right = curr;   // Create thread
+                curr = curr->left;           // Move to left child
+            } else {
+                // Thread already exists - remove it and move right
+                predecessor->right = nullptr;
+                curr = curr->right;
+            }
+        }
+    }
+    return result;
+}
